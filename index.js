@@ -1,15 +1,50 @@
-// Step 1: Simulate User Behavior
-// - Add event listeners for button clicks and form submissions.
-// - Use JavaScript to dynamically update the DOM based on user actions.
+function addElementToDOM(containerId, text) {
+  const container = document.getElementById(containerId);
+  const newDiv = document.createElement("div");
+  newDiv.textContent = text;
+  container.appendChild(newDiv);
+}
 
-// Step 2: DOM Manipulation Functions
-// - Implement functions to add, update, and remove DOM elements.
-// - Ensure all elements are dynamically created with appropriate attributes and content.
+function removeElementFromDOM(elementId) {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.remove();
+  }
+}
 
-// Step 3: Error Handling
-// - Display error messages in the DOM for invalid inputs or missing elements.
-// - Create reusable functions to handle common error cases.
+function simulateClick(containerId, message) {
+  const container = document.getElementById(containerId);
+  const p = document.createElement("p");
+  p.textContent = message; // must match test expectation exactly
+  container.appendChild(p);
+}
 
-// Step 4: Reusable Utilities
-// - Create modular utility functions, such as createElement(tag, attributes).
-// - Ensure all functions follow DRY principles for maintainability.
+function handleFormSubmit(event) {
+  // Make safe for tests that don’t pass a real event
+  if (event && event.preventDefault) {
+    event.preventDefault();
+  }
+  const input = document.getElementById("user-input").value.trim();
+  const container = document.getElementById("dynamic-content");
+  const error = document.getElementById("error-message");
+
+  if (input === "") {
+    // Match test expectation exactly
+    error.textContent = "Input cannot be empty";
+    error.classList.remove("hidden");
+  } else {
+    const p = document.createElement("p");
+    p.textContent = input;
+    container.appendChild(p);
+    error.textContent = "";
+    error.classList.add("hidden");
+  }
+}
+
+// Export functions for Jest tests
+module.exports = {
+  addElementToDOM,
+  removeElementFromDOM,
+  simulateClick,
+  handleFormSubmit,
+};
